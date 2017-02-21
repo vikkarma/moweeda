@@ -1,0 +1,93 @@
+<project name="moweeda" default="build" basedir=".">
+
+    <property name="lib.dir" value="lib"/>
+    <property name="logs.dir" value="logs"/>
+    <property name="classes.dir" value="classes"/>
+    <property name="dist.dir" value="dist"/>
+	<property name="stock.data.dir" value="stockdata"/>
+	<property name="scripts.dir" value="scripts"/>
+	<property name="config.dir" value="config"/>
+    <property name="app.name" value="moweeda"/>
+    
+    <path id="moweeda.classpath">
+        <pathelement location="bin"/>
+    	<pathelement location="${lib.dir}/opencsv-2.0.jar"/>
+    	<pathelement location="${lib.dir}/log4j-1.2.17.jar"/>
+    	<pathelement location="${lib.dir}/slf4j-log4j12-1.6.4.jar"/>
+    	<pathelement location="${lib.dir}/slf4j-api-1.6.4.jar"/>
+    </path>
+
+    <target name="clean">
+        <echo>********Cleaning up... ************</echo>
+        <echo>********Deleting ${classes.dir}************</echo>
+        <delete dir="${classes.dir}"/>
+        <echo>********Deleting ${dist.dir}************</echo>
+        <delete dir="${dist.dir}"/>
+    </target>
+    
+    <target name="prepare" depends="clean">
+        <echo>********Preparing... ************</echo>
+        <echo>********Creating ${classes.dir}************</echo>
+        <mkdir dir="${classes.dir}"/>
+        <echo>********Creating ${dist.dir}************</echo>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+    
+    <target name="compile" depends="prepare">
+        <echo>******** compiling src classes to ${classes.dir}************</echo>
+        <javac srcdir="${basedir}/src" destdir="${classes.dir}">
+            <classpath refid="moweeda.classpath"/>
+        </javac>
+    </target>
+
+   <target name="build" depends="compile">
+        <echo>******** Building ${dist.dir}/${app.name}.jar************</echo>
+        <jar destfile="${dist.dir}/${app.name}.jar">
+            <fileset dir="${classes.dir}"/>
+        </jar>
+
+        <echo>******** Copying ${basedir}/stockdata to ${dist.dir}/stockdata************</echo>
+        <copy todir="${dist.dir}/stockdata">
+            <fileset dir="${stock.data.dir}"/>
+        </copy>
+   	
+        <echo>******** Copying ${basedir}/logs to ${dist.dir}/logs************</echo>
+        <copy todir="${dist.dir}/logs">
+            <fileset dir="${logs.dir}"/>
+        </copy>
+
+        <echo>******** Copying ${basedir}/scripts to ${dist.dir}/scripts************</echo>
+        <copy todir="${dist.dir}/scripts">
+            <fileset dir="${scripts.dir}"/>
+        </copy>
+
+        <echo>******** Copying ${basedir}/config to ${dist.dir}/config************</echo>
+        <copy todir="${dist.dir}/config">
+            <fileset dir="${config.dir}"/>
+        </copy>
+
+        <echo>******** Copying required libraries to ${dist.dir}/lib************</echo>
+        <copy todir="${dist.dir}/lib">
+            <fileset dir="${lib.dir}">
+                <include name="moweeda.jar"/>
+            	<include name="opencsv-2.0.jar"/>
+            	<include name="log4j-1.2.17.jar"/>
+            	<include name="slf4j-log4j12-1.6.4.jar"/>
+            	<include name="slf4j-api-1.6.4.jar"/>
+            </fileset>
+        </copy>
+        <echo>******** Copying ${dist.dir} to ${dist.dir}/${app.name}************</echo>
+        <mkdir dir="${dist.dir}/${app.name}"/>
+        <move todir="${dist.dir}/${app.name}">
+            <fileset dir="${dist.dir}"/>
+        </move>
+        <delete dir="${dist.dir}/${app.name}/${app.name}"/>
+
+        <echo>******** Zipping ${dist.dir}/${app.name} to ${dist.dir}/${app.name}.zip************</echo>
+        <zip file="${dist.dir}/${app.name}.zip">
+            <zipfileset dir="${dist.dir}/${app.name}" prefix="">
+                <exclude name="${app.name}Test.jar"/>
+            </zipfileset>
+        </zip>
+    </target>
+</project>
