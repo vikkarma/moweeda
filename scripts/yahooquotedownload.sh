@@ -23,10 +23,10 @@ while read line; do
      curl -s $YAHOO_QUOTE_URL > "../tmp/$QUOTE_FILE"
      # get close file
      cat ../tmp/$QUOTE_FILE | awk -F, '{print $(NF-2)}' > ../stockdata/close_${QUOTE_FILE} 
-     sed '/Close/d' ../stockdata/close_${QUOTE_FILE}
+     sed -i '/Close/d' ../stockdata/close_${QUOTE_FILE}
      # get volume file
      cat ../tmp/$QUOTE_FILE | awk -F, '{print $(NF-1)}' > ../stockdata/vol_${QUOTE_FILE}
-     sed '/Volume/d' ../stockdata/vol_${QUOTE_FILE}
+     sed -i '/Volume/d' ../stockdata/vol_${QUOTE_FILE}
      sleep 3
 done < $FILE
 
