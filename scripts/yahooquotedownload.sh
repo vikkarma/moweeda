@@ -38,7 +38,7 @@ while read line; do
      echo "reversing  ../stockdata/vol_${QUOTE_FILE} to ascending date order as reqd by moweeda"
      tac ../stockdata/vol_${QUOTE_FILE} > ../stockdata/vol_tac_${QUOTE_FILE}
      mv ../stockdata/vol_tac_${QUOTE_FILE} ../stockdata/vol_${QUOTE_FILE}
-     sleep 0 
+     sleep 3 
 done < $FILE
 
 ######### Once the quote files are generated run_moweeda.sh on stock data .. enjoy
