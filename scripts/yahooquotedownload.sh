@@ -24,10 +24,21 @@ while read line; do
      # get close file
      cat ../tmp/$QUOTE_FILE | awk -F, '{print $(NF-2)}' > ../stockdata/close_${QUOTE_FILE} 
      sed -i '/Close/d' ../stockdata/close_${QUOTE_FILE}
+     # yahoo generates quotes in descending date order 
+     # moweeda code expects quotes in ascending date order so reverse it
+     echo "reversing ../stockdata/close_${QUOTE_FILE} to ascending date order as reqd by moweeda"
+     tac ../stockdata/close_${QUOTE_FILE} > ../stockdata/close_tac_${QUOTE_FILE}
+     mv ../stockdata/close_tac_${QUOTE_FILE} ../stockdata/close_${QUOTE_FILE}
+
      # get volume file
      cat ../tmp/$QUOTE_FILE | awk -F, '{print $(NF-1)}' > ../stockdata/vol_${QUOTE_FILE}
      sed -i '/Volume/d' ../stockdata/vol_${QUOTE_FILE}
-     sleep 3
+     # yahoo generates quotes in descending date order 
+     # moweeda code expects quotes in ascending date order so reverse it
+     echo "reversing  ../stockdata/vol_${QUOTE_FILE} to ascending date order as reqd by moweeda"
+     tac ../stockdata/vol_${QUOTE_FILE} > ../stockdata/vol_tac_${QUOTE_FILE}
+     mv ../stockdata/vol_tac_${QUOTE_FILE} ../stockdata/vol_${QUOTE_FILE}
+     sleep 0 
 done < $FILE
 
 ######### Once the quote files are generated run_moweeda.sh on stock data .. enjoy
