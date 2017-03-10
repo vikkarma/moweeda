@@ -10,10 +10,20 @@ FILE=$1
 BASEDIR=$(dirname $0)
 if [ ! -z "$BASEDIR" ]; then
     echo "changing current dir to $BASEDIR"
+    echo "change date in YAHOO_QUOTE_URL_PARTA to run"
     cd $BASEDIR
 fi
-
+#from {a=month-1, b=day, c=year}, to {d=month-1, e=day, f = year}
 YAHOO_QUOTE_URL_PARTA='http://real-chart.finance.yahoo.com/table.csv?a=02&b=1&c=2016&d=01&e=25&f=2017&g=d&ignore=.csv&s='
+while true; do
+    read -p "Did you change the date for which to download quotes in YAHOO_QUOTE_URL_PARTA?" yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
 while read line; do
      echo "getting historical quote for : $line"
      #chomp $line
