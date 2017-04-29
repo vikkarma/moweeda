@@ -18,7 +18,7 @@ configenv() {
 }
 
 executemoweeda() {
-    java -classpath .:$MOWEEDA_HOME/lib/*:$MOWEEDA_HOME/config/*:$MOWEEDA_HOME/moweeda.jar com.moweeda.stats.Moweeda
+    java -classpath .:$MOWEEDA_HOME/lib/*:$MOWEEDA_HOME/config/*:$MOWEEDA_HOME/moweeda.jar com.moweeda.stats.Moweeda /home/vvishwakarma/vikas/moweeda/stockdata
 }
 
 configenv
